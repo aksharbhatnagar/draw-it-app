@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">DrawIt!</string>
+    <string name="add_page">Add Page</string>
+    <string name="duplicate_page">Duplicate Page</string>
+    <string name="delete_page">Delete Page</string>
+    <string name="page_list">Page list</string>
+    <string name="pencil">Pencil</string>
+    <string name="eraser">Eraser</string>
+    <string name="play">Play video</string>
+    <string name="select_color">Select color</string>
+    <string name="random">Random</string>
+    <string name="generate_n_pages">Generate N Pages</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryVariant">#3700B3</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="colorOnBackground">#000000</color>
+    <color name="colorHint">#33FFFFFF</color>
+
+    <color name="canvas_background">#1A1A2E</color>
+    <color name="palette_color1">#4169E1</color>
+    <color name="palette_color2">#FF6347</color>
+    <color name="palette_color3">#FFD700</color>
+    <color name="palette_color4">#3CB371</color>
+</resources>

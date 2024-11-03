@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/canvas_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvDrawView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.7"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="20dp"
+        app:cardCornerRadius="40dp">
+
+        <com.example.myapplication.views.DrawView
+            android:id="@+id/drawView"
+            android:background="@drawable/draw_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        app:layout_constraintBottom_toTopOf="@id/topButtonContainer"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/inputNRandom"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/random"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textColorHint="@color/colorHint"
+            android:textColor="@color/colorBackground"
+            android:background="@null"
+            android:inputType="number" />
+
+        <ImageButton
+            android:id="@+id/buttonGenerate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_random"
+            android:background="@null"
+            android:text="@string/generate_n_pages" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/topButtonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/cvDrawView"
+        android:layout_gravity="top|center_horizontal"
+        android:gravity="center_horizontal"
+        android:padding="16dp">
+
+        <!-- Undo Button -->
+        <ImageButton
+            android:id="@+id/undoButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/undo_selector"
+            android:background="@null"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="5dp"
+            android:contentDescription="@string/add_page" />
+
+        <!-- Redo Button -->
+        <ImageButton
+            android:id="@+id/redoButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/redo_selector"
+            android:background="@null"
+            android:layout_marginHorizontal="5dp"
+            android:contentDescription="@string/add_page" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <!-- Add Page Button -->
+        <ImageButton
+            android:id="@+id/addPageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_new_page"
+            android:background="@null"
+            android:layout_marginHorizontal="2dp"
+            android:contentDescription="@string/add_page" />
+
+        <ImageButton
+            android:id="@+id/duplicatePageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_duplicate"
+            android:layout_marginHorizontal="2dp"
+            android:background="@null"
+            android:contentDescription="@string/delete_page" />
+
+        <!-- Delete Page Button -->
+        <ImageButton
+            android:id="@+id/deletePageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_bin"
+            android:layout_marginHorizontal="2dp"
+            android:background="@null"
+            android:contentDescription="@string/delete_page" />
+
+        <!-- Page List Button -->
+        <ImageButton
+            android:id="@+id/pageListButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_all_pages"
+            android:layout_marginStart="2dp"
+            android:background="@null"
+            android:contentDescription="@string/page_list" />
+
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/playButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_play_enabled"
+            android:background="@null"
+            android:layout_marginHorizontal="20dp"
+            android:contentDescription="@string/play" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomButtonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/cvDrawView"
+        android:layout_gravity="top|center_horizontal"
+        android:gravity="center_horizontal"
+        android:padding="16dp">
+
+        <ImageButton
+            android:id="@+id/pencilButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_pencil_disabled"
+            android:background="@null"
+            android:layout_marginHorizontal="10dp"
+            android:contentDescription="@string/add_page" />
+
+        <!-- Delete Page Button -->
+        <ImageButton
+            android:id="@+id/eraserButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_eraser_disabled"
+            android:layout_marginHorizontal="10dp"
+            android:background="@null"
+            android:contentDescription="@string/delete_page" />
+
+        <ImageButton
+            android:id="@+id/colorButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_color"
+            android:layout_marginHorizontal="10dp"
+            android:background="@null"
+            android:contentDescription="@string/select_color" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
