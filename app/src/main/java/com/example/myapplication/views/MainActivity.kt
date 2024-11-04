@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.databinding.ColorPalettePopupBinding
+import com.example.myapplication.databinding.PlaybackSpeedPopupBinding
 import com.example.myapplication.models.Page
 import com.example.myapplication.models.Path
 import com.example.myapplication.utils.ColorUtils
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
 
         drawView.setOnSavePathsListener(this)
         drawViewModel.setInitialPageIndex(this)
+        drawViewModel.setInitialSpeed(this)
         setObservers()
         binding.loadProgress.isVisible = true
         lifecycleScope.launch(Dispatchers.IO) {
@@ -181,6 +183,9 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
             drawViewModel.deleteAll()
             saveDocument()
         }
+        binding.setSpeed.setOnClickListener {
+            showPlaybackSpeedPopup(it)
+        }
     }
 
     private fun setButtonsForPlayback(isPlayback: Boolean) {
@@ -194,6 +199,9 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
         binding.pencilButton.isVisible = !isPlayback
         binding.eraserButton.isVisible = !isPlayback
         binding.colorButton.isVisible = !isPlayback
+        binding.setSpeed.isVisible = !isPlayback
+        binding.buttonGenerate.isVisible = !isPlayback
+        binding.inputNRandom.isVisible = !isPlayback
     }
 
     private fun saveDocument() {
@@ -265,6 +273,37 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
         popupWindow.setOnDismissListener {
             binding.colorButton.setImageResource(R.drawable.ic_color)
         }
+    }
+
+    private fun showPlaybackSpeedPopup(anchor: View) {
+        val popupBinding = PlaybackSpeedPopupBinding.inflate(layoutInflater)
+        val popupWindow = PopupWindow(popupBinding.root, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+
+        popupBinding.speedSlow.setOnClickListener {
+            drawViewModel.setPlaybackSpeed(this, SaveRepository.SPEED_SLOW)
+            popupWindow.dismiss()
+        }
+        popupBinding.speedNormal.setOnClickListener {
+            drawViewModel.setPlaybackSpeed(this, SaveRepository.SPEED_NORMAL)
+            popupWindow.dismiss()
+        }
+        popupBinding.speedFast.setOnClickListener {
+            drawViewModel.setPlaybackSpeed(this, SaveRepository.SPEED_FAST)
+            popupWindow.dismiss()
+        }
+        when (drawViewModel.getPlaybackSpeed()) {
+            SaveRepository.SPEED_FAST -> {
+                popupBinding.tickMarkFast.isVisible = true
+            }
+            SaveRepository.SPEED_SLOW -> {
+                popupBinding.tickMarkSlow.isVisible = true
+            }
+            else -> {
+                popupBinding.tickMarkNormal.isVisible = true
+            }
+        }
+        popupWindow.isOutsideTouchable = true
+        popupWindow.showAsDropDown(anchor)
     }
 
     companion object {

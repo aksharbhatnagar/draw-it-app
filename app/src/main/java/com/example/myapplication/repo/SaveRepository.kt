@@ -15,6 +15,10 @@ object SaveRepository {
     private const val KEY_CURRENT_PAGE_INDEX = "current_page_index" // 0-based
     private const val KEY_TOTAL_STEPS = "total_steps"
     private const val KEY_CURRENT_STEPS = "current_steps"
+    private const val KEY_PLAYBACK_SPEED = "playback_speed"
+    const val SPEED_FAST = 50L
+    const val SPEED_SLOW = 200L
+    const val SPEED_NORMAL = 100L
 
     suspend fun savePageToFile(context: Context, page: Page) {
         withContext(Dispatchers.IO) {
@@ -144,5 +148,14 @@ object SaveRepository {
     fun getCurrentSteps(context: Context): Int {
         val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         return sharedPreferences.getInt(KEY_CURRENT_STEPS, 0)
+    }
+
+    fun setPlaybackSpeed(context: Context, speed: Long) {
+        val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        return sharedPreferences.edit().putLong(KEY_PLAYBACK_SPEED, speed).apply()
+    }
+    fun getPlaybackSpeed(context: Context): Long {
+        val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        return sharedPreferences.getLong(KEY_PLAYBACK_SPEED, SPEED_NORMAL)
     }
 }

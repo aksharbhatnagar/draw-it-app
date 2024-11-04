@@ -35,6 +35,11 @@
         android:gravity="center"
         android:orientation="horizontal">
 
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
         <EditText
             android:id="@+id/inputNRandom"
             android:layout_width="80dp"
@@ -54,6 +59,19 @@
             android:src="@drawable/ic_random"
             android:background="@null"
             android:text="@string/generate_n_pages" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/setSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_speed"
+            android:layout_marginEnd="20dp"
+            android:background="@null" />
 
     </LinearLayout>
 

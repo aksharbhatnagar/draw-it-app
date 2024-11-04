@@ -9,6 +9,7 @@ import com.example.myapplication.models.Document
 import com.example.myapplication.models.Page
 import com.example.myapplication.models.Path
 import com.example.myapplication.repo.SaveRepository
+import com.example.myapplication.repo.SaveRepository.SPEED_NORMAL
 import com.example.myapplication.views.DrawView
 import kotlinx.coroutines.delay
 import java.util.ArrayDeque
@@ -38,6 +39,8 @@ class DrawViewModel: ViewModel() {
 
     private val _playbackPage = MutableLiveData<Page>()
     val playbackPage: LiveData<Page> = _playbackPage
+
+    private var playbackSpeed = SPEED_NORMAL
 
     private val currentPage: Page?
         get() {
@@ -230,7 +233,7 @@ class DrawViewModel: ViewModel() {
         val allPages = _pages.value ?: return
         for (page in allPages) {
             _playbackPage.value = page
-            delay(100)
+            delay(playbackSpeed)
         }
         delay(500)
     }
@@ -396,6 +399,17 @@ class DrawViewModel: ViewModel() {
         val doc = Document(allPages)
         SaveRepository.saveDocument(context, doc)
     }
+
+    fun setPlaybackSpeed(context: Context, speed: Long) {
+        playbackSpeed = speed
+        SaveRepository.setPlaybackSpeed(context, speed)
+    }
+
+    fun setInitialSpeed(context: Context) {
+        playbackSpeed = SaveRepository.getPlaybackSpeed(context)
+    }
+
+    fun getPlaybackSpeed() = playbackSpeed
 
     var ERASER_SIZE = 0.03f
 

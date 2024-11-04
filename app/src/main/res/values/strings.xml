@@ -12,4 +12,7 @@
     <string name="random">Random</string>
     <string name="generate_n_pages">Generate N Pages</string>
     <string name="click_item_to_navigate">Click on item to navigate back to that frame</string>
+    <string name="_0_5x">0.5x</string>
+    <string name="_1x">1x</string>
+    <string name="_2x">2x</string>
 </resources>
