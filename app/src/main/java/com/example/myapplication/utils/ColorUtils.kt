@@ -12,8 +12,8 @@ object ColorUtils {
 
     fun getRandomColor(): Int {
         val red = Random.nextInt(256)    // Random value between 0 and 255
-        val green = Random.nextInt(256)  // Random value between 0 and 255
-        val blue = Random.nextInt(256)   // Random value between 0 and 255
+        val green = Random.nextInt(256)
+        val blue = Random.nextInt(256)
 
         return Color.rgb(red, green, blue)
     }

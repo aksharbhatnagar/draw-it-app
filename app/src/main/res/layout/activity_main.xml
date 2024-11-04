@@ -215,6 +215,15 @@
             android:background="@null"
             android:contentDescription="@string/select_color" />
 
+        <ImageButton
+            android:id="@+id/shareButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_share"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center_vertical"
+            android:background="@null"
+            />
     </LinearLayout>
 
     <LinearLayout

@@ -23,6 +23,7 @@ import com.example.myapplication.models.Path
 import com.example.myapplication.utils.ColorUtils
 import com.example.myapplication.repo.SaveRepository
 import com.example.myapplication.utils.ClickUtils.setDebouncedClickListener
+import com.example.myapplication.utils.GifUtils
 import com.example.myapplication.viewmodel.DrawViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -182,6 +183,19 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
         }
         binding.setSpeed.setDebouncedClickListener {
             showPlaybackSpeedPopup(it)
+        }
+        binding.shareButton.setDebouncedClickListener(1000) {
+            binding.loadProgress.isVisible = true
+            lifecycleScope.launch(Dispatchers.IO) {
+                val bitmaps =
+                    GifUtils.createBitmapsFromPages(this@MainActivity, drawViewModel.pages.value ?: listOf(), 500, 500)
+                val delay = drawViewModel.getPlaybackSpeed()
+                GifUtils.saveGif(this@MainActivity, bitmaps, delay.toInt())
+                GifUtils.shareGif(this@MainActivity)
+                withContext(Dispatchers.Main) {
+                    binding.loadProgress.isVisible = false
+                }
+            }
         }
     }
 
