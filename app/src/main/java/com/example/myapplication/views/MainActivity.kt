@@ -25,6 +25,7 @@ import com.example.myapplication.viewmodel.DrawViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
     private lateinit var binding: ActivityMainBinding
@@ -44,8 +45,12 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
         drawView.setOnSavePathsListener(this)
         drawViewModel.setInitialPageIndex(this)
         setObservers()
+        binding.loadProgress.isVisible = true
         lifecycleScope.launch(Dispatchers.IO) {
             drawViewModel.loadPages(this@MainActivity)
+            withContext(Dispatchers.Main) {
+                binding.loadProgress.isVisible = false
+            }
         }
         setClickListeners()
         storyboardLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -53,7 +58,7 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
                 val data: Intent? = result.data
                 val resultValue = data?.getIntExtra(STORYBOARD_RESULT_KEY, -1)
                 if (resultValue != null && resultValue != -1) {
-                    drawViewModel.setCurrentIndex(resultValue)
+                    drawViewModel.setCurrentIndex(this, resultValue)
                 }
             }
         }
@@ -114,13 +119,8 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
         }
         binding.pageListButton.setOnClickListener {
             // Open Storyboard activity
-            val canvasWidth = SaveRepository.getCanvasWidth(this)
-            val canvasHeight = SaveRepository.getCanvasHeight(this)
-            val intent = Intent(this, StoryboardActivity::class.java).apply {
-                putExtra("canvas_width", canvasWidth)
-                putExtra("canvas_height", canvasHeight)
-            }
-            storyboardLauncher.launch(intent)
+            val storyboardIntent = Intent(this, StoryboardActivity::class.java)
+            storyboardLauncher.launch(storyboardIntent)
         }
         binding.pencilButton.setOnClickListener {
             drawViewModel.setMode(DrawViewModel.DrawMode.PENCIL)
@@ -163,13 +163,11 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
             val input = binding.inputNRandom.text.toString()
             val currentIndex = SaveRepository.getCurrentPageIndex(this)
             val currentStep = SaveRepository.getCurrentSteps(this)
-            val canvasWidth = SaveRepository.getCanvasWidth(this)
-            val canvasHeight = SaveRepository.getCanvasHeight(this)
             val n = input.toIntOrNull() ?: 0
             if (n > 0) {
                 val randomPages = List(n) {
                     Page(currentIndex + it + 1).apply {
-                        val shapePoints = drawViewModel.generateRandomShapeCoordinates(canvasWidth, canvasHeight)
+                        val shapePoints = drawViewModel.generateRandomShapeCoordinates()
                         addPath(Path(shapePoints.toMutableList(), ColorUtils.getRandomColor(), currentStep + 1))
                     }
                 }
@@ -178,6 +176,10 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
             } else {
                 Toast.makeText(this, "Please enter a valid number", Toast.LENGTH_SHORT).show()
             }
+        }
+        binding.deleteAllButton.setOnClickListener {
+            drawViewModel.deleteAll()
+            saveDocument()
         }
     }
 
@@ -188,6 +190,7 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
         binding.duplicatePageButton.isVisible = !isPlayback
         binding.deletePageButton.isVisible = !isPlayback
         binding.pageListButton.isVisible = !isPlayback
+        binding.deleteAllButton.isVisible = !isPlayback
         binding.pencilButton.isVisible = !isPlayback
         binding.eraserButton.isVisible = !isPlayback
         binding.colorButton.isVisible = !isPlayback
@@ -199,7 +202,7 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
         }
     }
 
-    override fun onSavePage(page: Page) {
+    override fun onSave() {
         saveDocument()
     }
 
@@ -221,10 +224,6 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
 
     override fun onEraseStart() {
         drawViewModel.onNewStep(this)
-    }
-
-    override fun onCanvasSize(w: Int, h: Int) {
-        drawViewModel.saveCanvasSize(this, w, h)
     }
 
     private fun showColorPalette(anchor: View) {
@@ -251,9 +250,16 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
             drawViewModel.setColor(color4)
             popupWindow.dismiss()
         }
+        popupBinding.color5.setOnClickListener {
+            val color5 = ContextCompat.getColor(this, R.color.palette_color5)
+            drawViewModel.setColor(color5)
+            popupWindow.dismiss()
+        }
         popupWindow.isOutsideTouchable = true
-        val xOffset = -4 * anchor.width
-        popupWindow.showAsDropDown(anchor, xOffset, 0)
+        val xOffset = -5 * anchor.width
+        val yOffset = -anchor.height - (resources.displayMetrics.heightPixels * 0.1).toInt()
+
+        popupWindow.showAsDropDown(anchor, xOffset, yOffset)
 
         binding.colorButton.setImageResource(R.drawable.ic_color_selected)
         popupWindow.setOnDismissListener {
@@ -265,7 +271,6 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
         const val STORYBOARD_RESULT_KEY = "selected_index"
     }
 }
-// todo support landscape orientation
 
 /*
  * Copyright (c) 2024 Akshar Bhatnagar

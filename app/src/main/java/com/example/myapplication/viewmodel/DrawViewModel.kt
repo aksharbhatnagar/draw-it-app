@@ -169,16 +169,18 @@ class DrawViewModel: ViewModel() {
         val allPages = SaveRepository.getAllPages(context)
         if (allPages.isNotEmpty()) {
             _pages.postValue(allPages)
+            val currIndex = _currentPageIndex.value ?: 0
+            _currentPageIndex.postValue(currIndex.coerceIn(0, allPages.size - 1))
         }
     }
 
     fun erasePoint(point: DrawView.Point, step: Int) {
         val currentPages = _pages.value?.toMutableList() ?: return
         val currentPageIndex = currentPageIndex.value ?: return
-        val minX = point.x - ERASER_SIZE
-        val maxX = point.x + ERASER_SIZE
-        val minY = point.y - ERASER_SIZE
-        val maxY = point.y + ERASER_SIZE
+        val minX = point.relativeX - ERASER_SIZE
+        val maxX = point.relativeX + ERASER_SIZE
+        val minY = point.relativeY - ERASER_SIZE
+        val maxY = point.relativeY + ERASER_SIZE
 
         if (currentPageIndex in currentPages.indices) {
             val currentPage = currentPages[currentPageIndex]
@@ -187,7 +189,7 @@ class DrawViewModel: ViewModel() {
                     continue
                 }
                 for (pathPoint in path.getPathPoints()) {
-                    if (pathPoint.x in minX..maxX && pathPoint.y in minY..maxY) {
+                    if (pathPoint.relativeX in minX..maxX && pathPoint.relativeY in minY..maxY) {
                         pathPoint.isErased = true
                         pathPoint.erasedStep = step
                     }
@@ -219,8 +221,9 @@ class DrawViewModel: ViewModel() {
         return _drawMode.value ?: DrawMode.PENCIL
     }
 
-    fun setCurrentIndex(index: Int) {
+    fun setCurrentIndex(context: Context, index: Int) {
         _currentPageIndex.value = index
+        SaveRepository.setCurrentPageIndex(context, index)
     }
 
     suspend fun startPlayback() {
@@ -317,62 +320,75 @@ class DrawViewModel: ViewModel() {
         }
     }
 
-    fun saveCanvasSize(context: Context, w: Int, h: Int) {
-        SaveRepository.setCanvasWidth(context, w)
-        SaveRepository.setCanvasHeight(context, h)
+    fun deleteAll() {
+        _pages.value = listOf(Page(0))
+        _currentPageIndex.value = 0
+        clearStacks()
     }
 
-    fun generateRandomShapeCoordinates(canvasWidth: Int, canvasHeight: Int): List<DrawView.Point> {
+    fun generateRandomShapeCoordinates(): List<DrawView.Point> {
         val shapeType = if (Random.nextBoolean()) "circle" else "square"
-        val size = Random.nextFloat() * (minOf(canvasWidth, canvasHeight) / 4)
-        val centerX = Random.nextFloat() * (canvasWidth - size) + size / 2
-        val centerY = Random.nextFloat() * (canvasHeight - size) + size / 2
-        val points = mutableListOf<DrawView.Point>()
+        val size = Random.nextFloat() * 0.5f
+        val centerX = Random.nextFloat().coerceIn(0.25f, 0.75f)
+        val centerY = Random.nextFloat().coerceIn(0.25f, 0.75f)
 
         return when (shapeType) {
             "circle" -> {
                 val numPoints = 36 // Number of points to approximate the circle
-                for (i in 0 .. numPoints) {
-                    val angle = (2 * Math.PI / numPoints * i).toFloat()
-                    val x = centerX + size * cos(angle)
-                    val y = centerY + size * sin(angle)
-                    points.add(DrawView.Point(x, y))
-                }
-                points
+                generateCirclePoints(DrawView.Point(centerX, centerY), size, numPoints)
             }
             "square" -> {
-                // Generate points for a square with additional points along the edges
-                val halfSize = size / 2
-
-                val numPointsPerEdge = 5 // Number of points per edge, excluding corners
-                // Top edge
-                for (i in 0..numPointsPerEdge) {
-                    val x = centerX - halfSize + (size * i / numPointsPerEdge)
-                    val y = centerY - halfSize
-                    points.add(DrawView.Point(x, y))
-                }
-                // Right edge
-                for (i in 0..numPointsPerEdge) {
-                    val x = centerX + halfSize
-                    val y = centerY - halfSize + (size * i / numPointsPerEdge)
-                    points.add(DrawView.Point(x, y))
-                }
-                // Bottom edge
-                for (i in 0..numPointsPerEdge) {
-                    val x = centerX + halfSize - (size * i / numPointsPerEdge)
-                    val y = centerY + halfSize
-                    points.add(DrawView.Point(x, y))
-                }
-                // Left edge
-                for (i in 0..numPointsPerEdge) {
-                    val x = centerX - halfSize;
-                    val y = centerY + halfSize - (size * i / numPointsPerEdge)
-                    points.add(DrawView.Point(x, y))
-                }
-                points
+                generateSquareEdgePoints(DrawView.Point(centerX, centerY), size, 5)
             }
             else -> emptyList()
         }
+    }
+
+    private fun generateCirclePoints(center: DrawView.Point, radius: Float, numPoints: Int): List<DrawView.Point> {
+        return List(numPoints + 1) { i ->
+            val angle = 2 * Math.PI / numPoints * i
+            DrawView.Point(center.relativeX + radius * cos(angle).toFloat(), center.relativeY + radius * sin(angle).toFloat())
+        }
+    }
+
+    private fun generateSquareEdgePoints(center: DrawView.Point, size: Float, pointsPerEdge: Int): List<DrawView.Point> {
+        val halfSize = size / 2
+        val points = mutableListOf<DrawView.Point>()
+
+        // Define corners
+        val topLeft = DrawView.Point(center.relativeX - halfSize, center.relativeY - halfSize)
+        val topRight = DrawView.Point(center.relativeX + halfSize, center.relativeY - halfSize)
+        val bottomRight =DrawView.Point(center.relativeX + halfSize, center.relativeY + halfSize)
+        val bottomLeft = DrawView.Point(center.relativeX - halfSize, center.relativeY + halfSize)
+
+        // Generate points for each edge, including corners
+        for (edge in 0..3) { // 0: Top, 1: Right, 2: Bottom, 3: Left
+            for (i in 0..pointsPerEdge) {
+                val t = i.toFloat() / pointsPerEdge // Normalized value from 0 to 1
+
+                val point = when (edge) {
+                    0 -> DrawView.Point(
+                        topLeft.relativeX + (topRight.relativeX - topLeft.relativeX) * t,
+                        topLeft.relativeY // Top edge
+                    )
+                    1 -> DrawView.Point(
+                        topRight.relativeX, // Right edge
+                        topRight.relativeY + (bottomRight.relativeY - topRight.relativeY) * t
+                    )
+                    2 -> DrawView.Point(
+                        bottomRight.relativeX - (bottomRight.relativeX - bottomLeft.relativeX) * t,
+                        bottomRight.relativeY // Bottom edge
+                    )
+                    3 -> DrawView.Point(
+                        bottomLeft.relativeX, // Left edge
+                        bottomLeft.relativeY - (bottomLeft.relativeY - topLeft.relativeY) * t
+                    )
+                    else -> throw IllegalArgumentException("Invalid edge")
+                }
+                points.add(point)
+            }
+        }
+        return points.distinct()
     }
 
     suspend fun saveDocument(context: Context) {
@@ -381,7 +397,7 @@ class DrawViewModel: ViewModel() {
         SaveRepository.saveDocument(context, doc)
     }
 
-    var ERASER_SIZE = 40
+    var ERASER_SIZE = 0.03f
 
     enum class DrawMode {
         PENCIL, ERASER, PLAYBACK

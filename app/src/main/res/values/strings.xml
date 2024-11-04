@@ -4,6 +4,7 @@
     <string name="duplicate_page">Duplicate Page</string>
     <string name="delete_page">Delete Page</string>
     <string name="page_list">Page list</string>
+    <string name="delete_all">Delete all</string>
     <string name="pencil">Pencil</string>
     <string name="eraser">Eraser</string>
     <string name="play">Play video</string>

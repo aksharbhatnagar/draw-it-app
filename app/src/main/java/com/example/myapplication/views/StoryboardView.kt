@@ -13,8 +13,6 @@ class StoryboardView(context: Context, attrs: AttributeSet): View(context, attrs
         style = Paint.Style.STROKE
         strokeWidth = 5f // change later
     }
-    private var originalCanvasWidth = 1
-    private var originalCanvasHeight = 1
     private var displayPage: Page? = null
 
     override fun onDraw(canvas: Canvas) {
@@ -37,24 +35,19 @@ class StoryboardView(context: Context, attrs: AttributeSet): View(context, attrs
             val start = points[i]
             val end = points[i + 1]
             if (!end.isErased) {
-                canvas.drawLine(scaledX(start.x), scaledY(start.y), scaledX(end.x), scaledY(end.y), paint)
+                canvas.drawLine(scaledX(start.relativeX), scaledY(start.relativeY), scaledX(end.relativeX), scaledY(end.relativeY), paint)
             }
         }
     }
 
     private fun scaledX(x: Float): Float {
-        return (x / originalCanvasWidth * width)
+        return (x * width)
     }
     private fun scaledY(y: Float): Float {
-        return (y / originalCanvasHeight * height)
+        return (y * height)
     }
 
     fun setPage(page: Page) {
         displayPage = page
-    }
-
-    fun setCanvasSize(w: Int, h: Int) {
-        originalCanvasWidth = w
-        originalCanvasHeight = h
     }
 }

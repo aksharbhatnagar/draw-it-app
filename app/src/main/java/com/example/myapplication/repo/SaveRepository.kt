@@ -15,8 +15,6 @@ object SaveRepository {
     private const val KEY_CURRENT_PAGE_INDEX = "current_page_index" // 0-based
     private const val KEY_TOTAL_STEPS = "total_steps"
     private const val KEY_CURRENT_STEPS = "current_steps"
-    private const val KEY_CANVAS_WIDTH = "canvas_width"
-    private const val KEY_CANVAS_HEIGHT = "canvas_height"
 
     suspend fun savePageToFile(context: Context, page: Page) {
         withContext(Dispatchers.IO) {
@@ -146,25 +144,5 @@ object SaveRepository {
     fun getCurrentSteps(context: Context): Int {
         val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         return sharedPreferences.getInt(KEY_CURRENT_STEPS, 0)
-    }
-
-    fun getCanvasHeight(context: Context): Int {
-        val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        return sharedPreferences.getInt(KEY_CANVAS_HEIGHT, 1)
-    }
-
-    fun getCanvasWidth(context: Context): Int {
-        val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        return sharedPreferences.getInt(KEY_CANVAS_WIDTH, 1)
-    }
-
-    fun setCanvasWidth(context: Context, w: Int) {
-        val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        sharedPreferences.edit().putInt(KEY_CANVAS_WIDTH, w).apply()
-    }
-
-    fun setCanvasHeight(context: Context, h: Int) {
-        val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        sharedPreferences.edit().putInt(KEY_CANVAS_HEIGHT, h).apply()
     }
 }

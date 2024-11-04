@@ -4,8 +4,6 @@ import com.example.myapplication.views.DrawView
 
 class Page(val index: Int) {
     private val paths: MutableList<Path> = mutableListOf()
-    private var pageWidth = 1
-    private var pageHeight = 1
 
     fun addPath(path: Path) {
         paths.add(path)
@@ -21,7 +19,4 @@ class Page(val index: Int) {
         this.paths.clear()
         this.paths.addAll(paths)
     }
-
-    fun getPageWidth() = pageWidth
-    fun getPageHeight() = pageHeight
 }

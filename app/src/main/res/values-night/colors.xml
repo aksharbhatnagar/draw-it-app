@@ -12,4 +12,5 @@
     <color name="palette_color2">#32CD32</color>
     <color name="palette_color3">#800080</color>
     <color name="palette_color4">#FFFF00</color>
+    <color name="palette_color5">#000000</color>
 </resources>
