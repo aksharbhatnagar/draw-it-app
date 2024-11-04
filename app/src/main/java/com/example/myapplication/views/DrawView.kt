@@ -63,27 +63,13 @@ class DrawView(context: Context, attrs: AttributeSet): View(context, attrs) {
             }
             return
         }
-
-        Log.e("akshar", "DrawView ondraw, pages size : ${pages.size}")
         if (pages.isEmpty()) {
             return
         }
-        // if need to draw all pages
-//        for (i in pages.indices) {
-//            if (i != currentPageIndex) {
-//                for (pathData in pages[i].getPaths()) {
-//                    paint.color = pathData.color
-//                    paint.setShadowLayer(10f, 0f, 0f, Color.argb(50, Color.red(pathData.color), Color.green(pathData.color), Color.blue(pathData.color)))
-//                    // canvas.drawPath(pathData.path, paint)
-//                    setBitmapPoints(pathData.getPathPoints(), pathData.color)
-//                }
-//            }
-//        }
 
         // Draw paths from the current page
         if (currentPageIndex in pages.indices) {
             for (path in pages[currentPageIndex].getPaths()) {
-                Log.e("akshar", "DrawView ondraw, drawing page $currentPageIndex")
                 paint.color = path.color
                 // canvas.drawPath(pathData.path, paint)
                 // setBitmapPoints(pathData.getPathPoints())
@@ -95,13 +81,8 @@ class DrawView(context: Context, attrs: AttributeSet): View(context, attrs) {
 
         // draw blurred paths of previous page
         if (currentPageIndex >= 1) {
-            Log.e("akshar", "DrawView ondraw, drawing page ${currentPageIndex - 1}")
             if (currentPageIndex - 1 in pages.indices) {
                 for (path in pages[currentPageIndex - 1].getPaths()) {
-                    // paint.color = ColorUtils.decreaseOpacity(pathData.color)
-                    // paint.setShadowLayer(10f, 0f, 0f, Color.argb(50, Color.red(pathData.color), Color.green(pathData.color), Color.blue(pathData.color)))
-                    // canvas.drawPath(pathData.path, paint)
-                    // setBitmapPoints(pathData.getPathPoints())
                     if (path.isVisible) {
                         drawPathOnCanvas(
                             canvas,
@@ -112,23 +93,6 @@ class DrawView(context: Context, attrs: AttributeSet): View(context, attrs) {
                 }
             }
         }
-
-//        bitmap?.let {
-//            Log.e("akshar", "draw bitmap ")
-//            canvas.drawBitmap(it, 0f, 0f, paint)
-//        }
-        // Draw paths from other pages with a blurred effect
-
-//        paths.forEach { // draw each path with its color
-//            val points = it.getPathPoints()
-//            points.forEachIndexed { index, _ ->
-//                if (index < points.size - 1) {
-//                    val start = points[index]
-//                    val end = points[index + 1]
-//                    canvas.drawLine(start.x, start.y, end.x, end.y, paint)
-//                }
-//            }
-//        }
 
         if (drawMode == DrawViewModel.DrawMode.ERASER) {
             lastPoint?.let {
@@ -159,7 +123,6 @@ class DrawView(context: Context, attrs: AttributeSet): View(context, attrs) {
 
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                Log.e("akshar", "actiono down")
                 val point = Point(relativeX, relativeY)
                 lastPoint = point
                 pageEventsListener?.onCreateNewPath() // todo check if we can draw dots
@@ -176,10 +139,6 @@ class DrawView(context: Context, attrs: AttributeSet): View(context, attrs) {
                 }
             }
             MotionEvent.ACTION_UP -> {
-                Log.e("akshar", "action up")
-                Log.e("akshar", "added path to current page")
-
-                Log.e("akshar", "action up touchPencil calling saveDocument")
                 if (currentPageIndex in pages.indices) {
                     pageEventsListener?.onSave()
                 }
@@ -205,41 +164,12 @@ class DrawView(context: Context, attrs: AttributeSet): View(context, attrs) {
                 lastPoint = point
             }
             MotionEvent.ACTION_UP -> {
-                Log.e("akshar", "action up touch eraser calling saveDocument")
-                pageEventsListener?.onSave()
+                if (currentPageIndex in pages.indices) {
+                    pageEventsListener?.onSave()
+                }
             }
         }
         return true
-    }
-
-    private fun createBitmap(width: Int, height: Int) {
-        // Create a bitmap of the same size as the view
-        bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-    }
-
-    private fun setBitmapPoints(points: List<Point>) {
-        // bitmap?.eraseColor(Color.BLACK)
-        // Log.e("akshar", "set bitmap points called, points size : ${points.size}")
-//        for (point in points) {
-//            if (point.x.toInt() in 0 until width && point.y.toInt() in 0 until height) {
-//                Log.e("akshar", "added point to bitmap")
-//                bitmap?.setPixel(point.x.toInt(), point.y.toInt(), color)
-//            }
-//        }
-
-        for (i in 0 until points.size - 1) {
-            val start = points[i]
-            val end = points[i + 1]
-
-//            // Set the color for the line
-//            paint.color = start.color // You can customize how to set colors
-
-            // Draw line between points
-            bitmap?.let {
-                val canvas = Canvas(it)
-                canvas.drawLine(start.relativeX, start.relativeY, end.relativeX, end.relativeY, paint)
-            }
-        }
     }
 
     private fun drawPathOnCanvas(canvas: Canvas, points: List<Point>, color: Int) {

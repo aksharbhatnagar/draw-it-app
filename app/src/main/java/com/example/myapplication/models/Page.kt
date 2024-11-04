@@ -12,7 +12,7 @@ class Page(val index: Int) {
     fun getPaths() = paths
 
     fun addPointToPath(point: DrawView.Point) {
-        paths.last().add(point)
+        paths.lastOrNull()?.add(point)
     }
 
     fun setPaths(paths: List<Path>) {

@@ -65,7 +65,6 @@ class DrawViewModel: ViewModel() {
 
         // Increment the number of pages
         val count = currentPages.size
-        Log.e("akshar", "addPagesAtIndex added ${pages.size}")
         SaveRepository.saveNumberOfPages(context, count)
         val currIndex = _currentPageIndex.value ?: 0
         _currentPageIndex.value = min(currIndex + count, currentPages.size - 1)
@@ -82,7 +81,6 @@ class DrawViewModel: ViewModel() {
 
         // Increment the number of pages
         val count = currentPages.size
-        Log.e("akshar", "addPage saving page count = $count")
         SaveRepository.saveNumberOfPages(context, count)
         val currIndex = _currentPageIndex.value ?: 0
         _currentPageIndex.value = min(currIndex + 1, currentPages.size - 1)
@@ -104,7 +102,6 @@ class DrawViewModel: ViewModel() {
 
         // Increment the number of pages
         val count = currentPages.size
-        Log.e("akshar", "addPage saving page count = ${count}")
         SaveRepository.saveNumberOfPages(context, count)
         val currIndex = _currentPageIndex.value ?: 0
         _currentPageIndex.value = currIndex + 1
@@ -142,7 +139,6 @@ class DrawViewModel: ViewModel() {
 
         // Decrement the number of pages
         val count = currentPages.size
-        Log.e("akshar", "deletePage saving page count = ${count}")
         SaveRepository.saveNumberOfPages(context, count)
         _pages.value = currentPages
 

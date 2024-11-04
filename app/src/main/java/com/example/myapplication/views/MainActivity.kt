@@ -22,6 +22,7 @@ import com.example.myapplication.models.Page
 import com.example.myapplication.models.Path
 import com.example.myapplication.utils.ColorUtils
 import com.example.myapplication.repo.SaveRepository
+import com.example.myapplication.utils.ClickUtils.setDebouncedClickListener
 import com.example.myapplication.viewmodel.DrawViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -111,34 +112,34 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
     }
 
     private fun setClickListeners() {
-        binding.addPageButton.setOnClickListener {
+        binding.addPageButton.setDebouncedClickListener {
             drawViewModel.addPage(this)
         }
-        binding.deletePageButton.setOnClickListener {
+        binding.deletePageButton.setDebouncedClickListener {
             drawViewModel.deletePage(this)?.let {
                 saveDocument()
             }
         }
-        binding.pageListButton.setOnClickListener {
+        binding.pageListButton.setDebouncedClickListener {
             // Open Storyboard activity
             val storyboardIntent = Intent(this, StoryboardActivity::class.java)
             storyboardLauncher.launch(storyboardIntent)
         }
-        binding.pencilButton.setOnClickListener {
+        binding.pencilButton.setDebouncedClickListener {
             drawViewModel.setMode(DrawViewModel.DrawMode.PENCIL)
         }
-        binding.eraserButton.setOnClickListener {
+        binding.eraserButton.setDebouncedClickListener {
             drawViewModel.setMode(DrawViewModel.DrawMode.ERASER)
         }
-        binding.undoButton.setOnClickListener {
+        binding.undoButton.setDebouncedClickListener {
             drawViewModel.undo(this)
             saveDocument()
         }
-        binding.redoButton.setOnClickListener {
+        binding.redoButton.setDebouncedClickListener {
             drawViewModel.redo(this)
             saveDocument()
         }
-        binding.playButton.setOnClickListener {
+        binding.playButton.setDebouncedClickListener {
             val currMode = drawViewModel.getMode()
             if (currMode == DrawViewModel.DrawMode.PLAYBACK) {
                 playbackJob?.cancel()
@@ -151,17 +152,13 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
                 }
             }
         }
-        binding.colorButton.setOnClickListener {
+        binding.colorButton.setDebouncedClickListener {
             showColorPalette(it)
         }
-        binding.duplicatePageButton.setOnClickListener {
-            drawViewModel.duplicatePage(this)?.let {
-//                lifecycleScope.launch(Dispatchers.IO) {
-//                    onSavePage(it)
-//                }
-            }
+        binding.duplicatePageButton.setDebouncedClickListener {
+            drawViewModel.duplicatePage(this)
         }
-        binding.buttonGenerate.setOnClickListener {
+        binding.buttonGenerate.setDebouncedClickListener {
             val input = binding.inputNRandom.text.toString()
             val currentIndex = SaveRepository.getCurrentPageIndex(this)
             val currentStep = SaveRepository.getCurrentSteps(this)
@@ -179,11 +176,11 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
                 Toast.makeText(this, "Please enter a valid number", Toast.LENGTH_SHORT).show()
             }
         }
-        binding.deleteAllButton.setOnClickListener {
+        binding.deleteAllButton.setDebouncedClickListener {
             drawViewModel.deleteAll()
             saveDocument()
         }
-        binding.setSpeed.setOnClickListener {
+        binding.setSpeed.setDebouncedClickListener {
             showPlaybackSpeedPopup(it)
         }
     }

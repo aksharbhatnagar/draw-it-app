@@ -32,12 +32,10 @@ object SaveRepository {
             context.openFileOutput(fileName, Context.MODE_PRIVATE).use { output ->
                 output.write(json.toByteArray())
             }
-            Log.e("akshar", "saved page number ${page.index + 1}")
         }
     }
 
     suspend fun saveDocument(context: Context, document: Document) {
-        Log.e("akshar", "calling saveDocument")
         withContext(Dispatchers.IO) {
             val gson = Gson()
             val json = gson.toJson(document)
@@ -52,35 +50,8 @@ object SaveRepository {
         }
     }
 
-    suspend fun getPathFromJson(context: Context, index: Long): Page? {
-        return withContext(Dispatchers.IO) {
-            val fileName = "$index.json"
-            try {
-                val inputStream = context.openFileInput(fileName)
-                val json = inputStream.bufferedReader().use { it.readText() }
-                Gson().fromJson(json, Page::class.java)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                null
-            }
-        }
-    }
-
     suspend fun getAllPages(context: Context): List<Page> {
-        val numberOfPages = getNumberOfPages(context)
-        Log.e("akshar", "saved pages count = $numberOfPages")
         val pages = mutableListOf<Page>()
-//        for ( i in 0 until numberOfPages) {
-//            val fileName = "$i.json"
-//            try {
-//                val inputStream = context.openFileInput(fileName)
-//                val json = inputStream.bufferedReader().use { it.readText() }
-//                pages.add(Gson().fromJson(json, Page::class.java))
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//                return pages
-//            }
-//        }
         val fileName = "document.json"
         try {
             val inputStream = context.openFileInput(fileName)
@@ -90,7 +61,6 @@ object SaveRepository {
             e.printStackTrace()
             return pages
         }
-        Log.e("akshar", "got saved pages count = ${pages.size}")
 
         return pages
     }
@@ -107,17 +77,11 @@ object SaveRepository {
     }
 
     fun saveNumberOfPages(context: Context, numberOfPages: Int) {
-        Log.e("akshar", "saving number of pages $numberOfPages")
         val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putInt(KEY_NUMBER_OF_PAGES, numberOfPages)
             apply()
         }
-    }
-
-    fun getNumberOfPages(context: Context): Int {
-        val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        return sharedPreferences.getInt(KEY_NUMBER_OF_PAGES, 0)
     }
 
     fun setCurrentPageIndex(context: Context, index: Int) {
