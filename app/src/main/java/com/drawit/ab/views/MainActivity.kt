@@ -213,6 +213,7 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
         binding.setSpeed.isVisible = !isPlayback
         binding.buttonGenerate.isVisible = !isPlayback
         binding.inputNRandom.isVisible = !isPlayback
+        binding.shareButton.isVisible = !isPlayback
     }
 
     private fun saveDocument() {
