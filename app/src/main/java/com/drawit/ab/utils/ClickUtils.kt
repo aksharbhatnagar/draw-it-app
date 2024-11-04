@@ -1,4 +1,4 @@
-package com.example.myapplication.utils
+package com.drawit.ab.utils
 
 import android.os.SystemClock
 import android.view.View

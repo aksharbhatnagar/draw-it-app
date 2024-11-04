@@ -1,4 +1,4 @@
-package com.example.myapplication.views
+package com.drawit.ab.views
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,9 +7,9 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.myapplication.PageAdapter
-import com.example.myapplication.databinding.ActivityStoryboardBinding
-import com.example.myapplication.viewmodel.DrawViewModel
+import com.drawit.ab.PageAdapter
+import com.drawit.ab.databinding.ActivityStoryboardBinding
+import com.drawit.ab.viewmodel.DrawViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

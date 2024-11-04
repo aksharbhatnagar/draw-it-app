@@ -18,7 +18,7 @@
         android:layout_marginHorizontal="20dp"
         app:cardCornerRadius="40dp">
 
-        <com.example.myapplication.views.DrawView
+        <com.drawit.ab.views.DrawView
             android:id="@+id/drawView"
             android:background="@drawable/draw_background"
             android:layout_width="match_parent"

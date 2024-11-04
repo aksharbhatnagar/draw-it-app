@@ -1,10 +1,10 @@
-package com.example.myapplication
+package com.drawit.ab
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.databinding.ItemStoryboardBinding
-import com.example.myapplication.models.Page
+import com.drawit.ab.databinding.ItemStoryboardBinding
+import com.drawit.ab.models.Page
 
 class PageAdapter(
     private val pages: List<Page>,

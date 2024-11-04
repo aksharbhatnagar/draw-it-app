@@ -1,13 +1,13 @@
-package com.example.myapplication.utils
+package com.drawit.ab.utils
 
 import android.content.Context
 import android.content.Intent
 import android.graphics.*
 import android.net.Uri
 import androidx.core.content.FileProvider
-import com.example.myapplication.R
-import com.example.myapplication.models.Page
-import com.example.myapplication.views.DrawView
+import com.drawit.ab.R
+import com.drawit.ab.models.Page
+import com.drawit.ab.views.DrawView
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream

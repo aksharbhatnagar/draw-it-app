@@ -4,14 +4,14 @@ plugins {
 }
 
 android {
-    namespace 'com.example.myapplication'
+    namespace 'com.drawit.ab'
     compileSdk 34
 
     viewBinding {
         enabled = true
     }
     defaultConfig {
-        applicationId "com.example.myapplication"
+        applicationId "com.drawit.ab"
         minSdk 24
         targetSdk 34
         versionCode 1

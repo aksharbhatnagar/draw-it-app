@@ -1,4 +1,4 @@
-package com.example.myapplication.views
+package com.drawit.ab.views
 
 import android.app.Activity
 import android.content.Intent
@@ -14,17 +14,17 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.myapplication.R
-import com.example.myapplication.databinding.ActivityMainBinding
-import com.example.myapplication.databinding.ColorPalettePopupBinding
-import com.example.myapplication.databinding.PlaybackSpeedPopupBinding
-import com.example.myapplication.models.Page
-import com.example.myapplication.models.Path
-import com.example.myapplication.utils.ColorUtils
-import com.example.myapplication.repo.SaveRepository
-import com.example.myapplication.utils.ClickUtils.setDebouncedClickListener
-import com.example.myapplication.utils.GifUtils
-import com.example.myapplication.viewmodel.DrawViewModel
+import com.drawit.ab.R
+import com.drawit.ab.databinding.ActivityMainBinding
+import com.drawit.ab.databinding.ColorPalettePopupBinding
+import com.drawit.ab.databinding.PlaybackSpeedPopupBinding
+import com.drawit.ab.models.Page
+import com.drawit.ab.models.Path
+import com.drawit.ab.utils.ColorUtils
+import com.drawit.ab.repo.SaveRepository
+import com.drawit.ab.utils.ClickUtils.setDebouncedClickListener
+import com.drawit.ab.utils.GifUtils
+import com.drawit.ab.viewmodel.DrawViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

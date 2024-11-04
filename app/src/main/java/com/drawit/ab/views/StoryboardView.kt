@@ -1,10 +1,10 @@
-package com.example.myapplication.views
+package com.drawit.ab.views
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import com.example.myapplication.models.Page
+import com.drawit.ab.models.Page
 
 class StoryboardView(context: Context, attrs: AttributeSet): View(context, attrs) {
     private val paint = Paint().apply {

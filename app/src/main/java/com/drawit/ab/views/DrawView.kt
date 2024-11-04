@@ -1,16 +1,15 @@
-package com.example.myapplication.views
+package com.drawit.ab.views
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
-import com.example.myapplication.viewmodel.DrawViewModel
-import com.example.myapplication.models.Page
-import com.example.myapplication.utils.ColorUtils
+import com.drawit.ab.viewmodel.DrawViewModel
+import com.drawit.ab.models.Page
+import com.drawit.ab.utils.ColorUtils
 import kotlin.math.abs
 
 class DrawView(context: Context, attrs: AttributeSet): View(context, attrs) {

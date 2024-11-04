@@ -1,6 +1,6 @@
-package com.example.myapplication.models
+package com.drawit.ab.models
 
-import com.example.myapplication.views.DrawView
+import com.drawit.ab.views.DrawView
 
 data class Path(
     private val points: MutableList<DrawView.Point>,

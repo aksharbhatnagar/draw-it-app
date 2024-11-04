@@ -1,6 +1,6 @@
-package com.example.myapplication.models
+package com.drawit.ab.models
 
-import com.example.myapplication.views.DrawView
+import com.drawit.ab.views.DrawView
 
 class Page(val index: Int) {
     private val paths: MutableList<Path> = mutableListOf()

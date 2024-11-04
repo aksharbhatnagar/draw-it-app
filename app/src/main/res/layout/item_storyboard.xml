@@ -5,7 +5,7 @@
     android:padding="16dp"
     android:orientation="vertical">
 
-    <com.example.myapplication.views.StoryboardView
+    <com.drawit.ab.views.StoryboardView
         android:id="@+id/storyboardView"
         android:background="@drawable/draw_background"
         android:layout_width="90dp"

@@ -1,16 +1,15 @@
-package com.example.myapplication.viewmodel
+package com.drawit.ab.viewmodel
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.models.Document
-import com.example.myapplication.models.Page
-import com.example.myapplication.models.Path
-import com.example.myapplication.repo.SaveRepository
-import com.example.myapplication.repo.SaveRepository.SPEED_NORMAL
-import com.example.myapplication.views.DrawView
+import com.drawit.ab.models.Document
+import com.drawit.ab.models.Page
+import com.drawit.ab.models.Path
+import com.drawit.ab.repo.SaveRepository
+import com.drawit.ab.repo.SaveRepository.SPEED_NORMAL
+import com.drawit.ab.views.DrawView
 import kotlinx.coroutines.delay
 import java.util.ArrayDeque
 import kotlin.math.cos

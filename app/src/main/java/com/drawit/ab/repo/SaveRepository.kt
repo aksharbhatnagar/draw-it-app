@@ -1,9 +1,8 @@
-package com.example.myapplication.repo
+package com.drawit.ab.repo
 
 import android.content.Context
-import android.util.Log
-import com.example.myapplication.models.Document
-import com.example.myapplication.models.Page
+import com.drawit.ab.models.Document
+import com.drawit.ab.models.Page
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
