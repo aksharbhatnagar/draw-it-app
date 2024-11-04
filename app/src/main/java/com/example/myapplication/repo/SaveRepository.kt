@@ -1,14 +1,14 @@
-package com.example.myapplication.utils
+package com.example.myapplication.repo
 
 import android.content.Context
 import android.util.Log
-import com.example.myapplication.Document
-import com.example.myapplication.Page
+import com.example.myapplication.models.Document
+import com.example.myapplication.models.Page
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-object SaveUtils {
+object SaveRepository {
 
     private const val PREFS_NAME = "my_prefs"
     private const val KEY_NUMBER_OF_PAGES = "number_of_pages"

@@ -8,8 +8,8 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
-import com.example.myapplication.DrawViewModel
-import com.example.myapplication.Page
+import com.example.myapplication.viewmodel.DrawViewModel
+import com.example.myapplication.models.Page
 import com.example.myapplication.utils.ColorUtils
 import kotlin.math.pow
 import kotlin.math.sqrt

@@ -1,11 +1,14 @@
-package com.example.myapplication
+package com.example.myapplication.viewmodel
 
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.utils.SaveUtils
+import com.example.myapplication.models.Document
+import com.example.myapplication.models.Page
+import com.example.myapplication.models.Path
+import com.example.myapplication.repo.SaveRepository
 import com.example.myapplication.views.DrawView
 import kotlinx.coroutines.delay
 import java.util.ArrayDeque
@@ -60,7 +63,7 @@ class DrawViewModel: ViewModel() {
         // Increment the number of pages
         val count = currentPages.size
         Log.e("akshar", "addPagesAtIndex added ${pages.size}")
-        SaveUtils.saveNumberOfPages(context, count)
+        SaveRepository.saveNumberOfPages(context, count)
         val currIndex = _currentPageIndex.value ?: 0
         _currentPageIndex.value = min(currIndex + count, currentPages.size - 1)
 
@@ -77,7 +80,7 @@ class DrawViewModel: ViewModel() {
         // Increment the number of pages
         val count = currentPages.size
         Log.e("akshar", "addPage saving page count = $count")
-        SaveUtils.saveNumberOfPages(context, count)
+        SaveRepository.saveNumberOfPages(context, count)
         val currIndex = _currentPageIndex.value ?: 0
         _currentPageIndex.value = min(currIndex + 1, currentPages.size - 1)
 
@@ -99,7 +102,7 @@ class DrawViewModel: ViewModel() {
         // Increment the number of pages
         val count = currentPages.size
         Log.e("akshar", "addPage saving page count = ${count}")
-        SaveUtils.saveNumberOfPages(context, count)
+        SaveRepository.saveNumberOfPages(context, count)
         val currIndex = _currentPageIndex.value ?: 0
         _currentPageIndex.value = currIndex + 1
 
@@ -120,7 +123,7 @@ class DrawViewModel: ViewModel() {
     }
 
     suspend fun deletePageFromMemory(context: Context, index: Long) {
-        SaveUtils.deletePage(context, index)
+        SaveRepository.deletePage(context, index)
     }
 
     fun deletePage(context: Context): Page? {
@@ -137,7 +140,7 @@ class DrawViewModel: ViewModel() {
         // Decrement the number of pages
         val count = currentPages.size
         Log.e("akshar", "deletePage saving page count = ${count}")
-        SaveUtils.saveNumberOfPages(context, count)
+        SaveRepository.saveNumberOfPages(context, count)
         _pages.value = currentPages
 
         clearStacks()
@@ -163,7 +166,7 @@ class DrawViewModel: ViewModel() {
     }
 
     suspend fun loadPages(context: Context) {
-        val allPages = SaveUtils.getAllPages(context)
+        val allPages = SaveRepository.getAllPages(context)
         if (allPages.isNotEmpty()) {
             _pages.postValue(allPages)
         }
@@ -196,7 +199,7 @@ class DrawViewModel: ViewModel() {
     }
 
     suspend fun savePage(context: Context, page: Page) {
-        SaveUtils.savePageToFile(context, page)
+        SaveRepository.savePageToFile(context, page)
     }
 
     fun setColor(color: Int) {
@@ -204,7 +207,7 @@ class DrawViewModel: ViewModel() {
     }
 
     fun setInitialPageIndex(context: Context) {
-        val currIndex = SaveUtils.getCurrentPageIndex(context)
+        val currIndex = SaveRepository.getCurrentPageIndex(context)
         _currentPageIndex.value = currIndex
     }
 
@@ -236,7 +239,7 @@ class DrawViewModel: ViewModel() {
         }
         val step = newUndoStack.pop()
         val currStep = newUndoStack.peekLast() ?: 0
-        SaveUtils.setCurrentSteps(context, currStep)
+        SaveRepository.setCurrentSteps(context, currStep)
         val currPage = currentPage ?: return
         for (path in currPage.getPaths()) {
             if (path.addedStep == step) { // if point was added at that step
@@ -264,7 +267,7 @@ class DrawViewModel: ViewModel() {
             return
         }
         val step = newRedoStack.pop()
-        SaveUtils.setCurrentSteps(context, step)
+        SaveRepository.setCurrentSteps(context, step)
         val currPage = currentPage ?: return
 
         for (path in currPage.getPaths()) {
@@ -289,12 +292,12 @@ class DrawViewModel: ViewModel() {
     }
 
     fun onNewStep(context: Context) {
-        var totalSteps = SaveUtils.getTotalSteps(context)
+        var totalSteps = SaveRepository.getTotalSteps(context)
         totalSteps++
-        SaveUtils.setTotalSteps(context, totalSteps)
+        SaveRepository.setTotalSteps(context, totalSteps)
 
         val currStep = totalSteps
-        SaveUtils.setCurrentSteps(context, currStep)
+        SaveRepository.setCurrentSteps(context, currStep)
 
         // clear redo stack
         val newRedoStack = _redoStack.value
@@ -315,8 +318,8 @@ class DrawViewModel: ViewModel() {
     }
 
     fun saveCanvasSize(context: Context, w: Int, h: Int) {
-        SaveUtils.setCanvasWidth(context, w)
-        SaveUtils.setCanvasHeight(context, h)
+        SaveRepository.setCanvasWidth(context, w)
+        SaveRepository.setCanvasHeight(context, h)
     }
 
     fun generateRandomShapeCoordinates(canvasWidth: Int, canvasHeight: Int): List<DrawView.Point> {
@@ -328,10 +331,8 @@ class DrawViewModel: ViewModel() {
 
         return when (shapeType) {
             "circle" -> {
-                // Generate points for a circle
-
                 val numPoints = 36 // Number of points to approximate the circle
-                for (i in 0 until numPoints) {
+                for (i in 0 .. numPoints) {
                     val angle = (2 * Math.PI / numPoints * i).toFloat()
                     val x = centerX + size * cos(angle)
                     val y = centerY + size * sin(angle)
@@ -377,7 +378,7 @@ class DrawViewModel: ViewModel() {
     suspend fun saveDocument(context: Context) {
         val allPages = _pages.value?.toList() ?: return
         val doc = Document(allPages)
-        SaveUtils.saveDocument(context, doc)
+        SaveRepository.saveDocument(context, doc)
     }
 
     var ERASER_SIZE = 40

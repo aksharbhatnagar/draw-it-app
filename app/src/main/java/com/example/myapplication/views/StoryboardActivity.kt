@@ -1,13 +1,14 @@
-package com.example.myapplication
+package com.example.myapplication.views
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.myapplication.PageAdapter
 import com.example.myapplication.databinding.ActivityStoryboardBinding
+import com.example.myapplication.viewmodel.DrawViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -39,7 +40,7 @@ class StoryboardActivity : AppCompatActivity() {
                 // Go back to the main activity
                 val resultIntent = Intent()
                 resultIntent.putExtra(MainActivity.STORYBOARD_RESULT_KEY, position)
-                setResult(Activity.RESULT_OK, resultIntent)
+                setResult(RESULT_OK, resultIntent)
                 finish()
             }
         }

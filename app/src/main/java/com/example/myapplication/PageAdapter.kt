@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemStoryboardBinding
+import com.example.myapplication.models.Page
 
 class PageAdapter(
     private val pages: List<Page>,

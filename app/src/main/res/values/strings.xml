@@ -10,4 +10,5 @@
     <string name="select_color">Select color</string>
     <string name="random">Random</string>
     <string name="generate_n_pages">Generate N Pages</string>
+    <string name="click_item_to_navigate">Click on item to navigate back to that frame</string>
 </resources>

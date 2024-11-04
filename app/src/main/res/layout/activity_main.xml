@@ -30,10 +30,10 @@
         app:layout_constraintBottom_toTopOf="@id/topButtonContainer"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.06"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/inputNRandom"
@@ -60,18 +60,18 @@
     <LinearLayout
         android:id="@+id/topButtonContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.09"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/cvDrawView"
         android:layout_gravity="top|center_horizontal"
-        android:gravity="center_horizontal"
-        android:padding="16dp">
+        android:gravity="center_horizontal">
 
         <!-- Undo Button -->
         <ImageButton
             android:id="@+id/undoButton"
             android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_height="match_parent"
             android:src="@drawable/undo_selector"
             android:background="@null"
             android:layout_gravity="center_vertical"
@@ -82,7 +82,7 @@
         <ImageButton
             android:id="@+id/redoButton"
             android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:src="@drawable/redo_selector"
             android:background="@null"
@@ -98,7 +98,7 @@
         <ImageButton
             android:id="@+id/addPageButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:src="@drawable/ic_new_page"
             android:background="@null"
             android:layout_marginHorizontal="2dp"
@@ -107,7 +107,7 @@
         <ImageButton
             android:id="@+id/duplicatePageButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:src="@drawable/ic_duplicate"
             android:layout_marginHorizontal="2dp"
             android:background="@null"
@@ -117,7 +117,7 @@
         <ImageButton
             android:id="@+id/deletePageButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:src="@drawable/ic_bin"
             android:layout_marginHorizontal="2dp"
             android:background="@null"
@@ -127,7 +127,7 @@
         <ImageButton
             android:id="@+id/pageListButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:src="@drawable/ic_all_pages"
             android:layout_marginStart="2dp"
             android:background="@null"
@@ -142,7 +142,7 @@
         <ImageButton
             android:id="@+id/playButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_play_enabled"
             android:background="@null"
@@ -158,7 +158,7 @@
         app:layout_constraintTop_toBottomOf="@id/cvDrawView"
         android:layout_gravity="top|center_horizontal"
         android:gravity="center_horizontal"
-        android:padding="16dp">
+        android:padding="12dp">
 
         <ImageButton
             android:id="@+id/pencilButton"

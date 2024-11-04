@@ -3,9 +3,8 @@ package com.example.myapplication.views
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-import com.example.myapplication.Page
+import com.example.myapplication.models.Page
 
 class StoryboardView(context: Context, attrs: AttributeSet): View(context, attrs) {
     private val paint = Paint().apply {

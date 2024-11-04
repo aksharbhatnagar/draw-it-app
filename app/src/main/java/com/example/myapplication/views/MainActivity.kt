@@ -1,10 +1,8 @@
-package com.example.myapplication
+package com.example.myapplication.views
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.PopupWindow
@@ -16,11 +14,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.databinding.ColorPalettePopupBinding
+import com.example.myapplication.models.Page
+import com.example.myapplication.models.Path
 import com.example.myapplication.utils.ColorUtils
-import com.example.myapplication.utils.SaveUtils
-import com.example.myapplication.views.DrawView
+import com.example.myapplication.repo.SaveRepository
+import com.example.myapplication.viewmodel.DrawViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -67,7 +68,7 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
         }
         drawViewModel.currentPageIndex.observe(this) { index ->
             drawView.setCurrentPageIndex(index)
-            SaveUtils.setCurrentPageIndex(this, index)
+            SaveRepository.setCurrentPageIndex(this, index)
             // todo show current index/ total data
         }
 //        drawViewModel.totalPages.observe(this) { total ->
@@ -113,8 +114,8 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
         }
         binding.pageListButton.setOnClickListener {
             // Open Storyboard activity
-            val canvasWidth = SaveUtils.getCanvasWidth(this)
-            val canvasHeight = SaveUtils.getCanvasHeight(this)
+            val canvasWidth = SaveRepository.getCanvasWidth(this)
+            val canvasHeight = SaveRepository.getCanvasHeight(this)
             val intent = Intent(this, StoryboardActivity::class.java).apply {
                 putExtra("canvas_width", canvasWidth)
                 putExtra("canvas_height", canvasHeight)
@@ -160,10 +161,10 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
         }
         binding.buttonGenerate.setOnClickListener {
             val input = binding.inputNRandom.text.toString()
-            val currentIndex = SaveUtils.getCurrentPageIndex(this)
-            val currentStep = SaveUtils.getCurrentSteps(this)
-            val canvasWidth = SaveUtils.getCanvasWidth(this)
-            val canvasHeight = SaveUtils.getCanvasHeight(this)
+            val currentIndex = SaveRepository.getCurrentPageIndex(this)
+            val currentStep = SaveRepository.getCurrentSteps(this)
+            val canvasWidth = SaveRepository.getCanvasWidth(this)
+            val canvasHeight = SaveRepository.getCanvasHeight(this)
             val n = input.toIntOrNull() ?: 0
             if (n > 0) {
                 val randomPages = List(n) {
@@ -208,13 +209,13 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
 
     override fun onCreateNewPath() {
         drawViewModel.onNewStep(this)
-        val stepNum = SaveUtils.getTotalSteps(this)
+        val stepNum = SaveRepository.getTotalSteps(this)
         drawViewModel.createNewPathInCurrentFrame(stepNum)
     }
 
     override fun onErase(point: DrawView.Point) {
         // todo define add and erase step types to narrow down inverse operation
-        val step = SaveUtils.getCurrentSteps(this)
+        val step = SaveRepository.getCurrentSteps(this)
         drawViewModel.erasePoint(point, step)
     }
 
@@ -264,3 +265,11 @@ class MainActivity : AppCompatActivity(), DrawView.PageEventsListener {
         const val STORYBOARD_RESULT_KEY = "selected_index"
     }
 }
+// todo support landscape orientation
+
+/*
+ * Copyright (c) 2024 Akshar Bhatnagar
+ *
+ * All rights reserved. This code is proprietary and may not be used, modified,
+ * or distributed without explicit permission from the copyright owner.
+ */

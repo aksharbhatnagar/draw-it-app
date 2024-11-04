@@ -13,7 +13,7 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="34">
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".views.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".StoryboardActivity"
+        <activity android:name=".views.StoryboardActivity"
             android:exported="false">
         </activity>
     </application>
