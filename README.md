@@ -49,7 +49,7 @@ A simple yet powerful Android app for creating drawings and animations. This app
    - The app is fully compatible with both light and dark themes, ensuring a seamless experience in any environment
 
 ### 12. Share
-   - Export animation to GIF and share the final animation!
+   - Export animation to GIF and share the final animation! (using the Gif Encoder implementation from the [android-gif-encoder](https://github.com/nbadal/android-gif-encoder) repository)
 
 ---
 
