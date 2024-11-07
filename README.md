@@ -42,13 +42,13 @@ A simple yet powerful Android app for creating drawings and animations. This app
 ### 9. **Duplicate frame**
    - Create a new frame by copying all the contents of the current frame to it (useful for creating a slightly different animation frame from the previous one)
 
-### 9. **Playback Speed**
+### 10. **Playback Speed**
    - Ability to adjust the **playback speed** of the animation
 
-### 10. **Themes**
+### 11. **Themes**
    - The app is fully compatible with both light and dark themes, ensuring a seamless experience in any environment
 
-### 11. Share
+### 12. Share
    - Export animation to GIF and share the final animation!
 
 ---
@@ -66,3 +66,4 @@ A simple yet powerful Android app for creating drawings and animations. This app
 4. Changing the thickness of the pencil and eraser
 5. Tool for inserting ready-made geometric figures like arrows, straight lines, rectangles, circles, etc., and interaction with figures: adjusting size by stretching or pinching to zoom, move, rotating.
 6. A fill-colour tool for filling colour within the shape boundary
+7. Undo/redo page add/delete actions
